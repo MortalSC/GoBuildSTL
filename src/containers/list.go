@@ -1,5 +1,7 @@
 package containers
 
+import "errors"
+
 // Node 定义链表节点
 type Node[T any] struct {
 	data T
@@ -95,10 +97,10 @@ func (list *List[T]) InsertAfter(node *Node[T], data T) {
 // 头删法
 // RemoveAtHead
 // （方法）需要绑定接收者
-func (list *List[T]) RemoveAtHead() {
+func (list *List[T]) RemoveAtHead() error {
 	// 链表合法性判断（空？）
 	if list.head == nil {
-		return
+		return errors.New("cannot remove head from an empty list")
 	}
 	// 头指针后移（注意可能指向空）
 	list.head = list.head.next
@@ -108,15 +110,16 @@ func (list *List[T]) RemoveAtHead() {
 		list.tail = nil
 	}
 	list.size--
+	return nil
 }
 
 // 尾删法
 // RemoveAtTail
 // （方法）需要绑定接收者
-func (list *List[T]) RemoveAtTail() {
+func (list *List[T]) RemoveAtTail() error {
 	// 链表合法性判断（空？）
 	if list.tail == nil {
-		return
+		return errors.New("cannot remove tail from an empty list")
 	}
 	// 尾指针前移
 	list.tail = list.tail.prev
@@ -126,13 +129,14 @@ func (list *List[T]) RemoveAtTail() {
 		list.head = nil
 	}
 	list.size--
+	return nil
 }
 
 // 删除指定节点
-func (list *List[T]) RemoveNode(node *Node[T]) {
+func (list *List[T]) RemoveNode(node *Node[T]) error {
 	// 节点合法性判断
 	if node == nil {
-		return
+		return errors.New("cannot remove a nil node")
 	}
 	// 判断前面是否有节点
 	if node.prev != nil {
@@ -147,6 +151,7 @@ func (list *List[T]) RemoveNode(node *Node[T]) {
 		list.tail = node.prev
 	}
 	list.size--
+	return nil
 }
 
 func (list *List[T]) Size() int {

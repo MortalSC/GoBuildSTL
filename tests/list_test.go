@@ -2,6 +2,7 @@ package tests
 
 import (
 	"GOBUILDSTL/src/containers"
+	"fmt"
 	"testing"
 )
 
@@ -39,6 +40,36 @@ func TestInsertAtTail(t *testing.T) {
 	}
 }
 
+// 测试删除头部元素错误
+func TestRemoveHeadError(t *testing.T) {
+	list := containers.NewList[int]()
+
+	err := list.RemoveAtHead() // 试图删除空链表头
+	if err == nil {
+		t.Errorf("Expected error when removing head from empty list, but got nil")
+	}
+}
+
+// 测试删除尾部元素错误
+func TestRemoveTailError(t *testing.T) {
+	list := containers.NewList[int]()
+
+	err := list.RemoveAtTail() // 试图删除空链表尾
+	if err == nil {
+		t.Errorf("Expected error when removing tail from empty list, but got nil")
+	}
+}
+
+// 测试删除指定节点错误
+func TestRemoveNodeError(t *testing.T) {
+	list := containers.NewList[int]()
+
+	err := list.RemoveNode(nil) // 试图删除nil节点
+	if err == nil {
+		t.Errorf("Expected error when removing a nil node, but got nil")
+	}
+}
+
 // 测试删除头部元素
 func TestRemoveHead(t *testing.T) {
 	list := containers.NewList[int]()
@@ -46,7 +77,11 @@ func TestRemoveHead(t *testing.T) {
 	list.InsertAtHead(10)
 	list.InsertAtHead(20)
 
-	list.RemoveAtHead()
+	err := list.RemoveAtHead()
+
+	if err != nil {
+		fmt.Println("[ Error ] : ", err)
+	}
 
 	if list.Size() != 1 {
 		t.Errorf("Expected list size to be 1 after removing head, but got %d", list.Size())
@@ -65,7 +100,11 @@ func TestRemoveTail(t *testing.T) {
 	list.InsertAtTail(10)
 	list.InsertAtTail(30)
 
-	list.RemoveAtTail()
+	err := list.RemoveAtTail()
+
+	if err != nil {
+		fmt.Println("[ Error ] : ", err)
+	}
 
 	if list.Size() != 1 {
 		t.Errorf("Expected list size to be 1 after removing tail, but got %d", list.Size())
@@ -131,7 +170,11 @@ func TestRemoveNode(t *testing.T) {
 
 	nodeToRemove := list.Head().Next() // 删除第二个节点
 
-	list.RemoveNode(nodeToRemove)
+	err := list.RemoveNode(nodeToRemove)
+
+	if err != nil {
+		fmt.Println("[ Error ] : ", err)
+	}
 
 	if list.Size() != 2 {
 		t.Errorf("Expected list size to be 2 after removing a node, but got %d", list.Size())
